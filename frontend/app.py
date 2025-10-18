@@ -3,6 +3,10 @@ from datetime import datetime
 
 from flask import Flask, render_template, request, jsonify
 
+
+from ..backend import image-classifier
+
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -20,7 +24,7 @@ def image_classifier():
 
 @app.route("/image-classifier/detect", methods=["POST"])
 def detect_image():
-    score = 0
+    score = "HELLO"
     try:
         if "file" not in request.files:
             return jsonify({"error": "No file provided"}), 400
