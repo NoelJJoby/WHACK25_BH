@@ -25,7 +25,8 @@ def detect_AI_image_from_API(file):
 
 def detect_AI_from_image(image):
     
-    detector = pipeline("image-classification", model="Ateeqq/ai-vs-human-image-detector", use_fast=True)
+    
+    detector = pipeline("image-classification", model="haywoodsloan/ai-image-detector-dev-deploy")
     results = detector(image)
     
 
@@ -33,13 +34,17 @@ def detect_AI_from_image(image):
 
     return top_result["score"]
 
+ 
 
+def detect_ai(file):
 
-def detect_ai(file_path):
     scores = {"api":0, "visual":0}
-    scores["api"] = detect_AI_image_from_API(open(file_path,"rb"))
-    scores["visual"] = detect_AI_from_image(Image.open(file_path))
-    print(scores)
 
-file_path = "/mnt/noel/Code_Files/WHACK/WHACK25_BH/AIGenerationCheck/images/Untitled.jpg"
-detect_ai(file_path)
+    scores["api"] = detect_AI_image_from_API(file)
+
+    pImage = Image.open(file)
+    scores["visual"] = detect_AI_from_image(pImage)
+    return scores["api"], scores["visual"]
+
+# file_path = "/mnt/noel/Code_Files/WHACK/WHACK25_BH/images/Untitled.jpg"
+# print(detect_ai(file_path))

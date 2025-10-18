@@ -4,12 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Image Classifier</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='imageClassifierStyles.css') }}">
 </head>
-<body>
+<body> 
+  <nav class="navbar">
+  <div class="nav-logo">🧠 AI Classifier</div>
+  <ul class="nav-links">
+    <li><a href="/" class="home-link">Home</a></li>
+    <li><a href="/bot-detector"class="home-link">Bot-Detector</a></li>
+    <li><a href="/claim-checker"class="home-link">Claim Checker</a></li>
+  </ul>
+</nav>
+
 
   <div class="container">
-    <h1>🧠 AI Image Classifier</h1>
+    <h1> AI Image Classifier</h1>
     <p>Upload an image to check if it's AI-generated or real.</p>
 
     <form id="uploadForm" enctype="multipart/form-data">
@@ -17,11 +26,20 @@
       <button type="submit">Analyze Image</button>
     </form>
 
+    <img id="preview" class="hidden" alt="Image preview" />
+
     <div id="loading" class="hidden">Analyzing...</div>
-    <div id="result" class="hidden">
-      <h2>Result</h2>
-      <p id="output"></p>
+
+
+  <div id="result" class="hidden">
+    <h2>Result</h2>
+    <p id="output"></p>
+
+    <div id="confidenceContainer">
+      <div id="confidenceBar"></div> 
     </div>
+
+    <p id="scoresText"></p>
   </div>
 
   <script>
@@ -29,6 +47,20 @@
     const loading = document.getElementById('loading');
     const result = document.getElementById('result');
     const output = document.getElementById('output');
+    const bar = document.getElementById('confidenceBar');
+    const scoresText = document.getElementById('scoresText');
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('hidden');
+        result.classList.add('hidden');
+      }
+    });
+
+
+
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -51,16 +83,38 @@
         result.classList.remove('hidden');
         
         if (data.error) {
-          output.textContent = "❌ Error: " + data.error;
-        } else {
-          output.innerHTML = `
-            <strong>${data.score}</strong>`;
+          output.textContent = " Error: " + data.error;
+        }else {
+          const conf = data.average_score.toFixed(1)
+
+
+          if (conf > 50) {
+            output.innerHTML = `<strong>AI-Generated Image ${conf}%</strong>`;
+            bar.style.background = "#e74c3c"; // red
+            bar.style.width = conf + "%";
+          } else {  
+            output.innerHTML =` <strong>Real Image Confidence: ${(100 - conf).toFixed(1)}%</strong>`;
+            bar.style.background = "#2ecc71"; // green
+            bar.style.width = (100 - conf) + "%";
+          }
+
+          
+          scoresText.innerHTML = `
+            <strong>Average Score: ${data.average_score}</strong>
+            <p>Score from api:  ${data.api_score}</p>
+            <p>Score from local: ${data.local_score}</p>
+            `;
+          
+
+
+
         }
       } 
       catch (error) {
         loading.classList.add('hidden');
         result.classList.remove('hidden');
-        output.textContent = '⚠️ Server error. Please try again.';
+        output.textContent = ' Server error. Please try again.';
+        bar.style.width = "0%";
       }
     });
 

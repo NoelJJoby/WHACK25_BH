@@ -3,6 +3,12 @@ from datetime import datetime
 
 from flask import Flask, render_template, request, jsonify
 
+
+from backend import imageClassiferDetector
+
+
+
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -11,20 +17,24 @@ def index():
 
 @app.route("/image-classifier")
 def image_classifier():
-    return render_template("image-classifier.html")
+    return render_template("image-classifier.html") 
 
 @app.route("/image-classifier/detect", methods=["POST"])
 def detect_image():
-    score = 0
+    score = "HELLO" 
     try:
         if "file" not in request.files:
             return jsonify({"error": "No file provided"}), 400
 
         #### Run score classification moduels
         ####
+        api_score, local_score = imageClassiferDetector.detect_ai(request.files["file"])
+
 
         return jsonify({
-                "score": score
+                "average_score": round((api_score + local_score) / 2 *100, 3),
+                "api_score": api_score,
+                "local_score": local_score
             })
 
     except Exception as e:
