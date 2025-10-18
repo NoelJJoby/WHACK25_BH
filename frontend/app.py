@@ -48,18 +48,34 @@ def claim_checker():
 
 @app.route("/claim-checker/analyse", methods=["POST"])
 def analyse_tweet():
-    score = "HELLO" 
     try:
-        if "url" not in request.files:
-            return jsonify({"error": "No url provided"}), 400
+        data = request.get_json()
+        tweet_url = data.get("url", "")
 
-        print(request.files['url'])
+        if not tweet_url or "x.com" not in tweet_url:
+            return jsonify({"error": "Please enter a valid Twitter link."}), 400
+        print(tweet_url)
+
+        label = "true"
+        confidence =1
+    #
+    #   Run Claim Check
+    #
+        explanation = (
+            "The tweet was cross-checked with reputable news sources."
+            if label == "true"
+            else "The tweet could not be verified by fact-checking databases."
+        )
+
         return jsonify({
-                "api_score": score
-            })
+            "label": label,
+            "confidence": confidence,
+            "explanation": explanation
+        })
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500 
+        return jsonify({"error": str(e)}), 500
+
 
 
 @app.route("/api/data")
