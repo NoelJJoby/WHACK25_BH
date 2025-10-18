@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='imageClassifierStyles.css') }}">
 </head>
 <body> 
+  <a href="/" class="home-link">← Back to Home</a>
 
   <div class="container">
     <h1> AI Image Classifier</h1>
@@ -17,6 +18,8 @@
       <button type="submit">Analyze Image</button>
     </form>
 
+    <img id="preview" class="hidden" alt="Image preview" />
+
     <div id="loading" class="hidden">Analyzing...</div>
 
 
@@ -25,7 +28,7 @@
     <p id="output"></p>
 
     <div id="confidenceContainer">
-      <div id="confidenceBar"></div>
+      <div id="confidenceBar"></div> 
     </div>
 
     <p id="scoresText"></p>
@@ -38,6 +41,18 @@
     const output = document.getElementById('output');
     const bar = document.getElementById('confidenceBar');
     const scoresText = document.getElementById('scoresText');
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('hidden');
+        result.classList.add('hidden');
+      }
+    });
+
+
+
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();

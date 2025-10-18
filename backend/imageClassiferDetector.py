@@ -25,7 +25,8 @@ def detect_AI_image_from_API(file):
 
 def detect_AI_from_image(image):
     
-    detector = pipeline("image-classification", model="Ateeqq/ai-vs-human-image-detector", use_fast=True)
+    
+    detector = pipeline("image-classification", model="haywoodsloan/ai-image-detector-dev-deploy")
     results = detector(image)
     
 

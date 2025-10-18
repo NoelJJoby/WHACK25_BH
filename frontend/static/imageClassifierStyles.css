@@ -1,5 +1,5 @@
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background: #f5f6fa;
   color: #2f3640;
   display: flex;
@@ -13,7 +13,7 @@ body {
   background: white;
   padding: 2rem 3rem;
   border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 400px;
 }
@@ -75,11 +75,48 @@ button:hover {
 #confidenceBar {
   height: 100%;
   width: 0%;
-  background: #4CAF50; /* default green */
+  background: #4caf50; /* default green */
   transition: width 0.6s ease, background 0.6s ease;
 }
 
 #confidenceText {
   margin-top: 0.5rem;
   font-weight: bold;
+}
+
+#preview {
+  display: block;
+  margin: 1rem auto;
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+#preview:hover {
+  transform: scale(1.03);
+}
+
+.home-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  text-decoration: none;
+  color: white;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  padding: 0.6rem 1.2rem;
+  border-radius: 9999px; /* makes it pill-shaped */
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.home-link:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #0056b3, #0099cc);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+.home-link:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
 }
