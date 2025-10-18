@@ -22,7 +22,7 @@ def home():
 
 @app.route("/image-classifier")
 def image_classifier():
-    return render_template("image-classifier.html")
+    return render_template("image-classifier.html") 
 
 @app.route("/image-classifier/detect", methods=["POST"])
 def detect_image():

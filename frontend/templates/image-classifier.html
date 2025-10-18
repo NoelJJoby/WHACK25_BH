@@ -7,7 +7,15 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='imageClassifierStyles.css') }}">
 </head>
 <body> 
-  <a href="/" class="home-link">← Back to Home</a>
+  <nav class="navbar">
+  <div class="nav-logo">🧠 AI Classifier</div>
+  <ul class="nav-links">
+    <li><a href="/" class="home-link">Home</a></li>
+    <li><a href="/bot-detector"class="home-link">Bot-Detector</a></li>
+    <li><a href="/claim-checker"class="home-link">Claim Checker</a></li>
+  </ul>
+</nav>
+
 
   <div class="container">
     <h1> AI Image Classifier</h1>
