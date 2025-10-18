@@ -6,7 +6,7 @@
   <title>AI Image Classifier</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body> 
 
   <div class="container">
     <h1>🧠 AI Image Classifier</h1>
@@ -54,7 +54,10 @@
           output.textContent = "❌ Error: " + data.error;
         } else {
           output.innerHTML = `
-            <strong>${data.score}</strong>`;
+            <strong>Average Score: ${data.average_score}</strong>
+            <p>Score from api:  ${data.api_score}</p>
+            <p>Score from local: ${data.local_score}</p>
+            `;
         }
       } 
       catch (error) {
