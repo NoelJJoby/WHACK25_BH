@@ -1,7 +1,8 @@
 import requests
 import json
 
-from PIL import Image, ExifTags #type:ignore
+from transformers import pipeline
+from PIL import Image
 
 def detect_AI_image_from_API(file_path):
     api_user = "82621778"
@@ -17,9 +18,21 @@ def detect_AI_image_from_API(file_path):
 
     output = json.loads(r.text)
     if output["status"] == "success":
-        return output["type"]["ai_generated"]
+        return output["type"]["ai_generated"]   
     
     return -1
+
+
+def detect_AI_from_image(file_path):
+    
+    detector = pipeline("image-classification", model="Ateeqq/ai-vs-human-image-detector", use_fast=True)
+    image = Image.open(file_path)
+    results = detector(image)
+    
+
+    top_result = max(results, key=lambda x: x["score"])
+
+    return top_result["score"]
 
 
 
@@ -31,5 +44,7 @@ scores = {"api":0,"provenance":0, "visual":0}
 
 
 
-#scores["api"] = detect_AI_image_from_API(current_file_path)
+scores["api"] = detect_AI_image_from_API(current_file_path)
+scores["visual"] = detect_AI_from_image(current_file_path)
 
+print(scores)
