@@ -7,5 +7,13 @@
     </head>
     <body>
         <h1>Hello, This is our website</h1>
+        <p> Description of how our product works.</p>
+        <p>Here are some links to our other features present within our application </p>
+        <ol>
+            <li><a href="{{ url_for('hello', name='User') }}">Here is the link to our claim checker. </a></li>
+            <li><a href="{{ url_for('about') }}">Here is the link to our image classifier. </a></li>
+            <li><a href="{{ url_for('contact') }}">Here is the link to our twitter bot detector. /a></li> 
+        </ol>
+
     </body>
 </html>
