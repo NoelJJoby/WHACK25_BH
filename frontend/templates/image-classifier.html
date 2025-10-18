@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Image Classifier</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="container">
+    <h1>🧠 AI Image Classifier</h1>
+    <p>Upload an image to check if it's AI-generated or real.</p>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" id="fileInput" name="file" accept="image/*" required />
+      <button type="submit">Analyze Image</button>
+    </form>
+
+    <div id="loading" class="hidden">Analyzing...</div>
+    <div id="result" class="hidden">
+      <h2>Result</h2>
+      <p id="output"></p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const loading = document.getElementById('loading');
+    const result = document.getElementById('result');
+    const output = document.getElementById('output');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById('fileInput');
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      loading.classList.remove('hidden');
+      result.classList.add('hidden');
+
+      try {
+        const response = await fetch('/image-classifier/detect', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await response.json();
+
+        loading.classList.add('hidden');
+        result.classList.remove('hidden');
+        
+        if (data.error) {
+          output.textContent = "❌ Error: " + data.error;
+        } else {
+          output.innerHTML = `
+            <strong>${data.score}</strong>`;
+        }
+      } 
+      catch (error) {
+        loading.classList.add('hidden');
+        result.classList.remove('hidden');
+        output.textContent = '⚠️ Server error. Please try again.';
+      }
+    });
+
+
+
+  </script>
+</body>
+</html>
