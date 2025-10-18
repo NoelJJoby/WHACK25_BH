@@ -2,18 +2,21 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Hello, Flask</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='site.css')}}" />
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='site.css') }}" />
     </head>
-    <body>
-        <h1>Hello, This is our website</h1>
-        <p> Description of how our product works.</p>
-        <p>Here are some links to our other features present within our application </p>
-        <ol>
-            <li><a href="{{ url_for('hello', name='User') }}">Here is the link to our claim checker. </a></li>
-            <li><a href="{{ url_for('about') }}">Here is the link to our image classifier. </a></li>
-            <li><a href="{{ url_for('contact') }}">Here is the link to our twitter bot detector. /a></li> 
-        </ol>
 
+    <body>
+        <div class="navbar">
+            <a href="{{ url_for('index') }}" class="navbar-brand">Home</a>
+            <a href="{{ url_for('image_classifier') }}" class="navbar-item">Image Classifier</a>
+            <a href="{{ url_for('claim_checker') }}" class="navbar-item">Claim Checker</a>
+        </div>
+
+        <div class="body-content">
+            {% block content %}
+            {% endblock %}
+            <hr/>
+        </div>
     </body>
 </html>

@@ -7,12 +7,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("template.html")
-
-@app.route("/index")
-def home():
     return render_template("index.html")
- 
 
 @app.route("/image-classifier")
 def image_classifier():
