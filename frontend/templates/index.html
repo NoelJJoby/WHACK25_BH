@@ -1,28 +1,68 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>{% block title %}{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
-    </head>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
 
-    <body>
-        <div class="navbar">
-            <a href="{{ url_for('bot_detector') }}" class="navbar-item">Bot Detector</a>
-            <a href="{{ url_for('image_classifier') }}" class="navbar-item">Image Classifier</a>
-            <a href="{{ url_for('claim_checker') }}" class="navbar-item">Claim Checker</a>
-        </div>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">🧠 AI Classifier</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index')}}" class="home-link">Home</a></li>
+        <li>
+          <a href="{{ url_for('bot_detector')}}" class="home-link"
+            >Bot-Detector</a
+          >
+        </li>
+        <li>
+          <a href="{{ url_for('image_classifier') }}" class="home-link"
+            >Image Classifier</a
+          >
+        </li>
+        <li>
+            <a href="{{ url_for('claim_checker') }}" class="home-link">Claim Checker</a>
+        </li>
+      </ul>
+    </nav>
 
-        <div class="body-content">
-            {% block content %}
-            <p> Above are the links to the different parts of our website. These different features are vital to fact check your sources. Here is an explanation of each feature below: </p>
-            <li>
-                <ul><strong>Bot Detector:</strong> This feature allows users to analyze social media profiles (specifically twitter) to determine if they are operated by bots or real humans. It uses machine learning algorithms to assess various indicators of bot-like behaviour. This machine learning algorithm is trained off a large dataset of known bot and human-operated accounts to ensure accuracy. </ul>
-                <ul><strong>Image Classifier:</strong> This feature enables users to upload images and receive classifications based on their content. The image checker then returns the percentage whether the image is AI-generated or real. </ul>
-                <ul><strong>Claim Checker:</strong> This feature allows users to input claims (for example, a claim by a politician) and verifies it's accuracy by checking it against various sources. </ul>
-            </li>
-            {% endblock %}
-            <hr/>
-        </div>
-    </body>
+    <div class="body-content">
+      {% block content %}
+      <p>
+        Above are the links to the different parts of our website. These
+        different features are vital to fact check your sources. Here is an
+        explanation of each feature below:
+      </p>
+      <li>
+        <ul>
+          <strong>Bot Detector:</strong>
+          This feature allows users to analyze social media profiles
+          (specifically twitter) to determine if they are operated by bots or
+          real humans. It uses machine learning algorithms to assess various
+          indicators of bot-like behaviour. This machine learning algorithm is
+          trained off a large dataset of known bot and human-operated accounts
+          to ensure accuracy.
+        </ul>
+        <ul>
+          <strong>Image Classifier:</strong>
+          This feature enables users to upload images and receive
+          classifications based on their content. The image checker then returns
+          the percentage whether the image is AI-generated or real.
+        </ul>
+        <ul>
+          <strong>Claim Checker:</strong>
+          This feature allows users to input claims (for example, a claim by a
+          politician) and verifies it's accuracy by checking it against various
+          sources.
+        </ul>
+      </li>
+      {% endblock %}
+      <hr />
+    </div>
+  </body>
 </html>
