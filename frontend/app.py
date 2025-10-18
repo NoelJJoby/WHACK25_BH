@@ -35,7 +35,7 @@ def detect_image():
 
 
 @app.route("/bot-detector")
-def bot_detector():
+def bot_detector(): 
     return render_template("bot-detector.html")
 
 @app.route("/claim-checker")
