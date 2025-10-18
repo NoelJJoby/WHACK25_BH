@@ -23,16 +23,16 @@ def detect_AI_image_from_API(file):
     return -1
 
 
-def detect_AI_from_image(image):
+# def detect_AI_from_image(image):
     
     
-    detector = pipeline("image-classification", model="haywoodsloan/ai-image-detector-dev-deploy")
-    results = detector(image)
+#     detector = pipeline("image-classification", model="haywoodsloan/ai-image-detector-dev-deploy",use_fast=True)
+#     results = detector(image)
     
 
-    top_result = max(results, key=lambda x: x["score"])
+#     top_result = max(results, key=lambda x: x["score"])
 
-    return top_result["score"]
+#     return top_result["score"]
 
  
 
@@ -43,8 +43,8 @@ def detect_ai(file):
     scores["api"] = detect_AI_image_from_API(file)
 
     pImage = Image.open(file)
-    scores["visual"] = detect_AI_from_image(pImage)
-    return scores["api"], scores["visual"]
+    # scores["visual"] = detect_AI_from_image(pImage)
+    return scores["api"]#, scores["visual"]
 
 # file_path = "/mnt/noel/Code_Files/WHACK/WHACK25_BH/images/Untitled.jpg"
 # print(detect_ai(file_path))

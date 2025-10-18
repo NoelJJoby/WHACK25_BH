@@ -1,5 +1,3 @@
-import re
-from datetime import datetime
 
 from flask import Flask, render_template, request, jsonify
 
@@ -28,13 +26,11 @@ def detect_image():
 
         #### Run score classification moduels
         ####
-        api_score, local_score = imageClassiferDetector.detect_ai(request.files["file"])
-
+        api_score = imageClassiferDetector.detect_ai(request.files["file"])
+        print(api_score)
 
         return jsonify({
-                "average_score": round((api_score + local_score) / 2 *100, 3),
-                "api_score": api_score,
-                "local_score": local_score
+                "api_score": api_score
             })
 
     except Exception as e:
@@ -49,6 +45,21 @@ def bot_detector():
 @app.route("/claim-checker")
 def claim_checker():
     return render_template("claim-checker.html")
+
+@app.route("/claim-checker/analyse", methods=["POST"])
+def analyse_tweet():
+    score = "HELLO" 
+    try:
+        if "url" not in request.files:
+            return jsonify({"error": "No url provided"}), 400
+
+        print(request.files['url'])
+        return jsonify({
+                "api_score": score
+            })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500 
 
 
 @app.route("/api/data")
