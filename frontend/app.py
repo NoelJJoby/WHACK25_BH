@@ -1,35 +1,36 @@
-import re
-from datetime import datetime
 
 from flask import Flask, render_template, request, jsonify
+
+
+from backend import imageClassiferDetector
+
+
+
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("template.html")
-
-@app.route("/index")
-def home():
     return render_template("index.html")
- 
 
-@app.route("/image-classifier")
+@app.route("/image-classifier/")
 def image_classifier():
-    return render_template("image-classifier.html")
+    return render_template("image-classifier.html") 
 
 @app.route("/image-classifier/detect", methods=["POST"])
 def detect_image():
-    score = 0
+    score = "HELLO" 
     try:
         if "file" not in request.files:
             return jsonify({"error": "No file provided"}), 400
 
         #### Run score classification moduels
         ####
+        api_score = imageClassiferDetector.detect_ai(request.files["file"])
+        print(api_score)
 
         return jsonify({
-                "score": score
+                "api_score": api_score
             })
 
     except Exception as e:
@@ -37,13 +38,81 @@ def detect_image():
 
 
 
-@app.route("/bot-detector")
+@app.route("/bot-detector/")
 def bot_detector(): 
     return render_template("bot-detector.html")
 
-@app.route("/claim-checker")
+@app.route("/bot-detector/detect-bot", methods=['POST'])
+def detect_bot():
+    try:
+        data = request.get_json()
+        username = data.get("username", "").strip()
+        followers = data.get("followers", 0)
+        following = data.get("following", 0)
+        tweets = data.get("tweets", 0)
+        likes = data.get("likes", 0)
+
+        if not username:
+            return jsonify({"error": "Username is required"}), 400
+
+        # --- Example Heuristic / Mock ML Logic ---
+        bot_prob = 0.5
+
+        label = (
+            "bot" if bot_prob > 0.65
+            else "human" if bot_prob < 0.4
+            else "uncertain"
+        )
+
+        explanation = (
+            f"Follower/following ratio ({followers}:{following}) "
+            f"and tweet activity indicate {label} behavior."
+        )
+
+        return jsonify({
+            "label": label,
+            "confidence": round(bot_prob if label == "bot" else 1 - bot_prob, 2),
+            "explanation": explanation
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/claim-checker/")
 def claim_checker():
     return render_template("claim-checker.html")
+
+@app.route("/claim-checker/analyse", methods=["POST"])
+def analyse_tweet():
+    try:
+        data = request.get_json()
+        tweet_url = data.get("url", "")
+
+        if not tweet_url or "x.com" not in tweet_url:
+            return jsonify({"error": "Please enter a valid Twitter link."}), 400
+        print(tweet_url)
+
+        label = "true"
+        confidence =1
+    #
+    #   Run Claim Check
+    #
+        explanation = (
+            "The tweet was cross-checked with reputable news sources."
+            if label == "true"
+            else "The tweet could not be verified by fact-checking databases."
+        )
+
+        return jsonify({
+            "label": label,
+            "confidence": confidence,
+            "explanation": explanation
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 @app.route("/api/data")

@@ -1,37 +1,31 @@
-.message {
-    font-weight: 600;
-    color: red;
-}
-
 .navbar {
-    background-color: darkred;
+    background-color: red;
     font-size: 1em;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: white;
+    color: blue;
     padding: 8px 5px 8px 5px;
 }
 
 .navbar a {
-    color: white;
     text-decoration: none;
-    padding: 8px 12px 8px 12px;
+    color: inherit;
+    padding: 14px 20px;
 }
 
-.navbar brand{
-    font-weight: bold;
+.navbar-brand {
     font-size: 1.2em;
-    font-weight: 700;
+    font-weight: 800;
+    margin-left: 20px;
 }
 
-.navbar item{
-    font-size: 1em;
-    font-weight: 500;
-    font-variant: normal;
-    margin-left: 10px;
+.navbar-item {
+    font-variant: small-caps;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
-.body-content{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.body-content {
+    padding: 5px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.1em;
-    margin: 20px;
 }

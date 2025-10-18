@@ -1,11 +1,150 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Hello, Flask</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='site.css')}}" />
-    </head>
-    <body>
-        <h1>This is the bot detector</h1>
-    </body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>X Bot Detector</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">🧠 AI Classifier</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index')}}" class="home-link">Home</a></li>
+        <li>
+          <a href="{{ url_for('claim_checker')}}" class="home-link"
+            >Claim Checker</a
+          >
+        </li>
+        <li>
+          <a href="{{ url_for('image_classifier') }}" class="home-link"
+            >Image Classifier</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <h1>Check if an X (Twitter) Account is a Bot</h1>
+      <p>Enter account data to get a bot probability score.</p>
+
+      <form id="botForm">
+        <input
+          type="text"
+          id="username"
+          placeholder="Username (without @)"
+          required
+        /><br />
+        <input
+          type="number"
+          id="followers"
+          placeholder="Follower Count"
+          required
+        /><br />
+        <input
+          type="number"
+          id="following"
+          placeholder="Following Count"
+          required
+        /><br />
+        <input
+          type="number"
+          id="tweets"
+          placeholder="Total Tweets"
+          required
+        /><br />
+        <input
+          type="number"
+          id="likes"
+          placeholder="Total Likes"
+          required
+        /><br />
+        <button type="submit">Analyze</button>
+      </form>
+
+      <div id="loading" class="hidden">Analyzing account...</div>
+
+      <div id="result" class="hidden">
+        <h2>Result</h2>
+        <p id="verdict"></p>
+
+        <div id="confidenceContainer">
+          <div id="confidenceBar"></div>
+        </div>
+        <p id="confidenceText"></p>
+
+        <div id="analysis"></div>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("botForm");
+      const loading = document.getElementById("loading");
+      const result = document.getElementById("result");
+      const verdict = document.getElementById("verdict");
+      const analysis = document.getElementById("analysis");
+      const bar = document.getElementById("confidenceBar");
+      const confidenceText = document.getElementById("confidenceText");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const data = {
+          username: document.getElementById("username").value,
+          followers: parseInt(document.getElementById("followers").value),
+          following: parseInt(document.getElementById("following").value),
+          tweets: parseInt(document.getElementById("tweets").value),
+          likes: parseInt(document.getElementById("likes").value),
+        };
+
+        loading.classList.remove("hidden");
+        result.classList.add("hidden");
+
+        try {
+          const response = await fetch("/bot-detector/detect-bot", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          const res = await response.json();
+          loading.classList.add("hidden");
+          result.classList.remove("hidden");
+
+          if (res.error) {
+            verdict.textContent = "❌ Error: " + res.error;
+            return;
+          }
+
+          verdict.innerHTML =
+            res.label === "bot"
+              ? "🤖 Likely Bot Account"
+              : res.label === "human"
+              ? "🧠 Likely Human"
+              : "⚠️ Uncertain";
+
+          bar.style.width = `${res.confidence * 100}%`;
+          bar.style.background =
+            res.label === "bot"
+              ? "#e74c3c"
+              : res.label === "human"
+              ? "#2ecc71"
+              : "#f1c40f";
+
+          confidenceText.textContent = `Confidence: ${(
+            res.confidence * 100
+          ).toFixed(1)}%`;
+
+          analysis.innerHTML = `<p><strong>Analysis:</strong> ${res.explanation}</p>`;
+        } catch (err) {
+          loading.classList.add("hidden");
+          result.classList.remove("hidden");
+          verdict.textContent = "⚠️ Server error. Please try again.";
+        }
+      });
+    </script>
+  </body>
 </html>
