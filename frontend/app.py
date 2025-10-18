@@ -8,13 +8,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello, Flask!"
+    return "Hello, Flask! This is a Flask Server"
 
 
 @app.route("/hello/")
 @app.route("/hello/<name>")
-
-def hello_there(name = None):
+def hello_there(name=None):
     return render_template(
         "template.html",
         name=name,
