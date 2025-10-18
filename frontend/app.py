@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello, Flask! This is a Flask Server"
-
+    return render_template("index.html")
+ 
 
 @app.route("/image-classifier")
 def image_classifier():
