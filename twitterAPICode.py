@@ -31,5 +31,5 @@ for claim in results:
     print(f"Claimant: {claimant}")
     print(f"Source: {publisher}")
     print(f"Rating: {rating}")
-    print(f"URL: {review['url']}")
+    #print(f"URL: {review['url']}")
     print("-" * 60)
