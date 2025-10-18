@@ -36,15 +36,11 @@ def detect_AI_from_image(file_path):
 
 
 
+def detect_ai(file_path):
+    scores = {"api":0, "visual":0}
+    scores["api"] = detect_AI_image_from_API(file_path)
+    scores["visual"] = detect_AI_from_image(file_path)
+    print(scores)
 
-
-current_file_path = "/mnt/noel/Code_Files/WHACK/WHACK25_BH/AIGenerationCheck/images/Untitled.jpg"
-
-scores = {"api":0,"provenance":0, "visual":0}
-
-
-
-scores["api"] = detect_AI_image_from_API(current_file_path)
-scores["visual"] = detect_AI_from_image(current_file_path)
-
-print(scores)
+file_path = "/mnt/noel/Code_Files/WHACK/WHACK25_BH/AIGenerationCheck/images/FirstTest.jpg"
+detect_ai(file_path)
