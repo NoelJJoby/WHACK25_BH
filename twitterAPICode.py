@@ -21,15 +21,15 @@ def fact_check(query, max_results=5):
 results = fact_check("vaccines cause autism")
 
 for claim in results:
-    #text = claim.get("text")
-    #claimant = claim.get("claimant")
+    text = claim.get("text")
+    claimant = claim.get("claimant")
     review = claim["claimReview"][0]
-    #publisher = review["publisher"]["name"]
+    publisher = review["publisher"]["name"]
     rating = review["textualRating"]
 
     print(f"Claim: {text}")
     print(f"Claimant: {claimant}")
     print(f"Source: {publisher}")
     print(f"Rating: {rating}")
-    #print(f"URL: {review['url']}")
+    print(f"URL: {review['url']}")
     print("-" * 60)
