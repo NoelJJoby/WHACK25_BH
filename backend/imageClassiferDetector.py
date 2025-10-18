@@ -5,8 +5,10 @@ from transformers import pipeline
 from PIL import Image
 
 def detect_AI_image_from_API(file):
-    api_user = "82621778"
-    api_secret = "Ds33pfj8A62NRJhCjbdJjXey65399EXU"
+    api_user = "1438985336"
+    api_secret = "h7UNfgn5MVv3ehRHu3mjfXerUVJG39QD"
+
+
     params = {
     'models': 'genai',
     'api_user': f'{api_user}',
