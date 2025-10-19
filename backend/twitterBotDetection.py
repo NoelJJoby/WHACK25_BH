@@ -4,14 +4,14 @@ from sklearn.preprocessing import PolynomialFeatures
 
 def query_bot_detector(user_data):
 
-    model_filename = 'TwitterBotDetector.joblib'
+    model_filename = 'backend/TwitterBotDetector.joblib'
     model = joblib.load(model_filename)
     input_values = [
             user_data['Retweet Count'],
             user_data['Mention Count'],
             user_data['Follower Count'],
             user_data['Verified']
-    ]
+    ] 
     poly = PolynomialFeatures(degree=2, include_bias=True)
    
     

@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, jsonify
 
 
-from backend import imageClassiferDetector, claimCheckerDEFAULT
+from backend import imageClassiferDetector, claimCheckerDEFAULT, twitterBotDetection
 
 
 
@@ -46,17 +46,23 @@ def bot_detector():
 def detect_bot():
     try:
         data = request.get_json()
-        username = data.get("username", "").strip()
-        followers = data.get("followers", 0)
-        following = data.get("following", 0)
-        tweets = data.get("tweets", 0)
-        likes = data.get("likes", 0)
+        retweet_count = data.get("retweet_count", 0)
+        follower_count = data.get("follower_count", 0)
+        mention_count = data.get("mention_count", 0)
+        verified = data.get("verified", 0)
 
-        if not username:
-            return jsonify({"error": "Username is required"}), 400
 
         # --- Example Heuristic / Mock ML Logic ---
-        bot_prob = 0.5
+        new_user_to_check = {
+            'Retweet Count': retweet_count,
+            'Mention Count': mention_count,
+            'Follower Count': follower_count,
+            'Verified': verified  # 0 for False
+        }
+        
+        print(new_user_to_check)
+
+        bot_prob = twitterBotDetection.query_bot_detector(new_user_to_check)
 
         label = (
             "bot" if bot_prob > 0.65
@@ -64,15 +70,11 @@ def detect_bot():
             else "uncertain"
         )
 
-        explanation = (
-            f"Follower/following ratio ({followers}:{following}) "
-            f"and tweet activity indicate {label} behavior."
-        )
+        print(bot_prob, label)
 
         return jsonify({
             "label": label,
-            "confidence": round(bot_prob if label == "bot" else 1 - bot_prob, 2),
-            "explanation": explanation
+            "confidence": round(bot_prob if label == "bot" else 1 - bot_prob, 2)
         })
 
     except Exception as e:

@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>X Bot Detector</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="nav-logo">🧠 AI Classifier</div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X Bot Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+      <div class="nav-logo">Bot Detector</div>
       <ul class="nav-links">
         <li><a href="{{ url_for('index')}}" class="home-link">Home</a></li>
         <li>
@@ -27,124 +24,105 @@
       </ul>
     </nav>
 
-    <div class="container">
-      <h1>Check if an X (Twitter) Account is a Bot</h1>
-      <p>Enter account data to get a bot probability score.</p>
+  <div class="container">
+    <h1>Analyze X (Twitter) Account Behaviour</h1>
+    <p>Enter profile data below to detect if an account is human or bot-like.</p>
 
-      <form id="botForm">
-        <input
-          type="text"
-          id="username"
-          placeholder="Username (without @)"
-          required
-        /><br />
-        <input
-          type="number"
-          id="followers"
-          placeholder="Follower Count"
-          required
-        /><br />
-        <input
-          type="number"
-          id="following"
-          placeholder="Following Count"
-          required
-        /><br />
-        <input
-          type="number"
-          id="tweets"
-          placeholder="Total Tweets"
-          required
-        /><br />
-        <input
-          type="number"
-          id="likes"
-          placeholder="Total Likes"
-          required
-        /><br />
-        <button type="submit">Analyze</button>
-      </form>
+    <form id="botForm">
+      <label for="retweets">Retweet Count:</label>
+      <input type="number" id="retweets" placeholder="e.g. 45" required>
+      <br />
+      
+      <label for="followers">Follower Count:</label>
+      <input type="number" id="followers" placeholder="e.g. 1000" required>
 
-      <div id="loading" class="hidden">Analyzing account...</div>
+      <br />
+      <label for="mentions">Mention Count:</label>
+      <input type="number" id="mentions" placeholder="e.g. 25" required>
+      <br />
 
-      <div id="result" class="hidden">
-        <h2>Result</h2>
-        <p id="verdict"></p>
+      <label for="verified">Verified Flag (1 = Verified, 0 = Not Verified):</label>
+      <input type="number" id="verified" min="0" max="1" placeholder="0 or 1" required>
+      <br />
 
-        <div id="confidenceContainer">
-          <div id="confidenceBar"></div>
-        </div>
-        <p id="confidenceText"></p>
+      <button type="submit">Detect Bot</button>
+    </form>
 
-        <div id="analysis"></div>
+    <div id="loading" class="hidden">Analyzing account...</div>
+
+    <div id="result" class="hidden">
+      <h2>Result</h2>
+      <p id="verdict"></p>
+
+      <div id="confidenceContainer">
+        <div id="confidenceBar"></div>
       </div>
+      <p id="confidenceText"></p>
+
     </div>
+  </div>
 
-    <script>
-      const form = document.getElementById("botForm");
-      const loading = document.getElementById("loading");
-      const result = document.getElementById("result");
-      const verdict = document.getElementById("verdict");
-      const analysis = document.getElementById("analysis");
-      const bar = document.getElementById("confidenceBar");
-      const confidenceText = document.getElementById("confidenceText");
+  <script>
+    const form = document.getElementById("botForm");
+    const loading = document.getElementById("loading");
+    const result = document.getElementById("result");
+    const verdict = document.getElementById("verdict");
+    const analysis = document.getElementById("analysis");
+    const bar = document.getElementById("confidenceBar");
+    const confidenceText = document.getElementById("confidenceText");
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        const data = {
-          username: document.getElementById("username").value,
-          followers: parseInt(document.getElementById("followers").value),
-          following: parseInt(document.getElementById("following").value),
-          tweets: parseInt(document.getElementById("tweets").value),
-          likes: parseInt(document.getElementById("likes").value),
-        };
+      const payload = {
+        retweet_count: parseInt(document.getElementById("retweets").value),
+        follower_count: parseInt(document.getElementById("followers").value),
+        mention_count: parseInt(document.getElementById("mentions").value),
+        verified: parseInt(document.getElementById("verified").value),
+      };
 
-        loading.classList.remove("hidden");
-        result.classList.add("hidden");
+      loading.classList.remove("hidden");
+      result.classList.add("hidden");
 
-        try {
-          const response = await fetch("/bot-detector/detect-bot", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-          });
+      try {
+        const response = await fetch("/bot-detector/detect-bot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
 
-          const res = await response.json();
-          loading.classList.add("hidden");
-          result.classList.remove("hidden");
+        const data = await response.json();
+        loading.classList.add("hidden");
+        result.classList.remove("hidden");
 
-          if (res.error) {
-            verdict.textContent = "❌ Error: " + res.error;
-            return;
-          }
-
-          verdict.innerHTML =
-            res.label === "bot"
-              ? "🤖 Likely Bot Account"
-              : res.label === "human"
-              ? "🧠 Likely Human"
-              : "⚠️ Uncertain";
-
-          bar.style.width = `${res.confidence * 100}%`;
-          bar.style.background =
-            res.label === "bot"
-              ? "#e74c3c"
-              : res.label === "human"
-              ? "#2ecc71"
-              : "#f1c40f";
-
-          confidenceText.textContent = `Confidence: ${(
-            res.confidence * 100
-          ).toFixed(1)}%`;
-
-          analysis.innerHTML = `<p><strong>Analysis:</strong> ${res.explanation}</p>`;
-        } catch (err) {
-          loading.classList.add("hidden");
-          result.classList.remove("hidden");
-          verdict.textContent = "⚠️ Server error. Please try again.";
+        if (data.error) {
+          verdict.textContent = " Error: " + data.error;
+          return;
         }
-      });
-    </script>
-  </body>
+
+        verdict.innerHTML =
+          data.label === "bot"
+            ? "Likely Bot Account"
+            : data.label === "human"
+            ? " Likely Human"
+            : " Uncertain";
+
+        bar.style.width = `${data.confidence * 100}%`;
+        bar.style.background =
+          data.label === "bot"
+            ? "#e74c3c"
+            : data.label === "human"
+            ? "#2ecc71"
+            : "#f1c40f";
+
+        confidenceText.textContent = `Confidence: ${(data.confidence * 100).toFixed(1)}%`;
+
+      } catch (err) {
+        loading.classList.add("hidden");
+        result.classList.remove("hidden");
+        verdict.textContent = " Server error. Please try again.";
+      }
+    });
+  </script>
+</body>
 </html>
