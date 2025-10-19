@@ -5,6 +5,10 @@
 #os.environ["OPENAI_API_KEY"] = 
 #os.environ["FACTVERIFAI_MODEL"] = "openai/gpt-4o-mini"
 from langchain_community.llms import Ollama
+from factverifai import fact_check,core
+from langchain_community.llms import Ollama
+from backend import twitterFetcher
+
 #def aiFactChecker(inStatement):
     # Directly use the fact_check function provided by the library
     #result = fact_check(inStatement, exa="565999a9-b8ce-4d4d-a42d-e926538b2f5d")
@@ -43,7 +47,6 @@ class LocalLLM:
     def invoke(self, prompt):
         return self.llm.invoke(prompt)
 
-from factverifai import core
 core.llm = LocalLLM(model="llama2") 
 
 def aiFactChecker(inStatement):
@@ -51,15 +54,13 @@ def aiFactChecker(inStatement):
     return result
 
 #uncheckedStatement = input("Enter a statement to fact check: ")
-#testUrl = "https://x.com/GrahamSmith_/status/1979466306580607447"
+testUrl = "https://x.com/GrahamSmith_/status/1979466306580607447"
 #testUrl = input("Enter a twitter URL: ")
 def claimCheckerMain(testUrl):
     #Imports
-    from factverifai import fact_check
-    from langchain_community.llms import Ollama
-    from twitterFetcher import tweetFetcher
+    
     #testUrl = ""
-    uncheckedStatement = tweetFetcher(testUrl)
+    uncheckedStatement = twitterFetcher.tweetFetcher(testUrl)
     #print(uncheckedStatement)
     factResponse = aiFactChecker(uncheckedStatement)
     if ("true" in factResponse.lower()) and (("not true") not in factResponse.lower()):
@@ -73,4 +74,4 @@ def claimCheckerMain(testUrl):
     print(factResponse)
     return factResponse
 
-#claimCheckerMain(testUrl)
+claimCheckerMain(testUrl)

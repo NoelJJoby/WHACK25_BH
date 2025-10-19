@@ -49,11 +49,6 @@
         <h2>Result</h2>
         <p id="verdict"></p>
 
-        <div id="confidenceContainer">
-          <div id="confidenceBar"></div>
-        </div>
-        <p id="confidenceText"></p>
-
         <div id="analysis"></div>
       </div>
     </div>
@@ -92,23 +87,12 @@
 
           // Update UI
           verdict.innerHTML =
-            data.label === "true"
+            data.classification === "True"
               ? "✅ Likely True"
-              : data.label === "mixed"
+              : data.classification === "Unknown" || data.classification ==="Unsupported"
               ? "⚠️ Mixed or Uncertain"
               : "❌ Likely False";
 
-          bar.style.width = `${data.confidence * 100}%`;
-          bar.style.background =
-            data.label === "true"
-              ? "#2ecc71"
-              : data.label === "mixed"
-              ? "#f1c40f"
-              : "#e74c3c";
-
-          confidenceText.textContent = `Confidence: ${(
-            data.confidence * 100
-          ).toFixed(1)}%`;
 
           analysis.innerHTML = `<p><strong>Analysis:</strong> ${data.explanation}</p>`;
         } catch (err) {
