@@ -170,15 +170,15 @@ def get_tweet_text_and_media(url: str, nitter_mirrors=None, timeout=10) -> Tuple
 
 def tweetFetcher(test_url):
     #test_url = "https://x.com/GrahamSmith_/status/1979466306580607447"
-    print("test url:", test_url)
+    #print("test url:", test_url)
     text, meta = get_tweet_text_and_media(test_url)
-    print("source:", meta.get("source"))
+    #print("source:", meta.get("source"))
     if text:
-        print("tweet text:", text)
+        #print("tweet text:", text)
         #print(text)
         return text
     else:
-        print("Could not extract tweet text. meta:", meta)
+        #print("Could not extract tweet text. meta:", meta)
         return meta
 
 
