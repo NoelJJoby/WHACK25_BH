@@ -1,3 +1,4 @@
+## WHACK2025  BREVAN HOWARD
 ##  Inspiration
 The main inspiration came from the prompt:  
 > "Accurate Information is really important for making decisions. Create something that helps understand information accuracy — for example, social media posts, news headlines, economic predictions, AI responses, etc."
