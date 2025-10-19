@@ -10,13 +10,13 @@ from transformers import pipeline
 #Key Constants
 API_KEY = "AIzaSyDgELmawO8uyMVHoIrObCc3jwOIQHg0Aa0"
 BASE_URL = "https://factchecktools.googleapis.com/v1alpha1/claims:search"
-OPENAI_API_KEY = "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"
+Key = "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"
 
 #from ai_summarizer import summarize_text
 #from openai import OpenAI
 #client = OpenAI(api_key="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")
 
-from googleapiclient.discovery import build
+#from googleapiclient.discovery import build
 import time
 
 #def fact_check_query(query):
