@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, jsonify
 
 
-from backend import imageClassiferDetector#, claimCheckerDEFAULT
+from backend import imageClassiferDetector, claimCheckerDEFAULT
 
 
 
@@ -93,11 +93,9 @@ def analyse_tweet():
             return jsonify({"error": "Please enter a valid Twitter link."}), 400
         print(tweet_url)
 
-        #classification = claimCheckerDEFAULT.claimCheckerMain(tweet_url)
-        
-        
-        classification = "True"
-        
+        classification, further_exp = claimCheckerDEFAULT.claimCheckerMain(tweet_url)
+        print(classification)
+        print(further_exp)
         if classification == "True":
             explanation = "The tweet was cross-checked with reputable news sources."
         elif classification == "False":
@@ -111,7 +109,8 @@ def analyse_tweet():
 
         return jsonify({
             "classification": classification,
-            "explanation": explanation
+            "explanation": explanation,
+            "further_exp": further_exp
         })
 
     except Exception as e:

@@ -94,7 +94,7 @@
               : "❌ Likely False";
 
 
-          analysis.innerHTML = `<p><strong>Analysis:</strong> ${data.explanation}</p>`;
+          analysis.innerHTML = `<p><strong>Analysis:</strong> ${data.explanation}</p> <p>${data.further_exp}</p>`;
         } catch (err) {
           loading.classList.add("hidden");
           result.classList.remove("hidden");
