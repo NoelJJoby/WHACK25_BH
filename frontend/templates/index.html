@@ -26,43 +26,59 @@
           >
         </li>
         <li>
-            <a href="{{ url_for('claim_checker') }}" class="home-link">Claim Checker</a>
+          <a href="{{ url_for('claim_checker') }}" class="home-link"
+            >Claim Checker</a
+          >
         </li>
       </ul>
     </nav>
 
-    <div class="body-content">
-      {% block content %}
-      <p>
-        Above are the links to the different parts of our website. These
-        different features are vital to fact check your sources. Here is an
-        explanation of each feature below:
+    <section class="features">
+      <h2>Our Tools</h2>
+      <p class="intro-text">
+        These powerful features help you verify information, detect bots, and
+        identify AI-generated images — all in one place.
       </p>
-      <li>
-        <ul>
-          <strong>Bot Detector:</strong>
-          This feature allows users to analyze social media profiles
-          (specifically twitter) to determine if they are operated by bots or
-          real humans. It uses machine learning algorithms to assess various
-          indicators of bot-like behaviour. This machine learning algorithm is
-          trained off a large dataset of known bot and human-operated accounts
-          to ensure accuracy.
-        </ul>
-        <ul>
-          <strong>Image Classifier:</strong>
-          This feature enables users to upload images and receive
-          classifications based on their content. The image checker then returns
-          the percentage whether the image is AI-generated or real.
-        </ul>
-        <ul>
-          <strong>Claim Checker:</strong>
-          This feature allows users to input claims (for example, a claim by a
-          politician) and verifies it's accuracy by checking it against various
-          sources.
-        </ul>
-      </li>
-      {% endblock %}
-      <hr />
-    </div>
+
+      <div class="feature-grid">
+        <!-- Bot Detector -->
+        <div class="feature-card">
+          <h3>🤖 Bot Detector</h3>
+          <p>
+            Analyze X (Twitter) profiles to determine if they are operated by
+            real users or bots. Our machine learning algorithm assesses
+            behavioral patterns based on a dataset of verified human and bot
+            accounts.
+          </p>
+          <a href="{{ url_for('bot_detector')}}" class="feature-link">Try Bot Detector →</a>
+        </div>
+
+        <!-- Image Classifier -->
+        <div class="feature-card">
+          <h3>🖼️ Image Classifier</h3>
+          <p>
+            Upload an image and let our AI determine whether it’s authentic or
+            AI-generated. Receive a confidence score that reflects the
+            likelihood of the image being real.
+          </p>
+          <a href="{{ url_for('image_classifier')}}" class="feature-link"
+            >Try Image Classifier →</a
+          >
+        </div>
+
+        <!-- Claim Checker -->
+        <div class="feature-card">
+          <h3>📢 Claim Checker</h3>
+          <p>
+            Enter any claim (e.g., a political statement or viral tweet) and our
+            tool will cross-check it against trusted sources to estimate its
+            factual accuracy.
+          </p>
+          <a href="{{ url_for('claim_checker')}}" class="feature-link">Try Claim Checker →</a>
+        </div>
+      </div>
+    </section>
+
+    
   </body>
 </html>
